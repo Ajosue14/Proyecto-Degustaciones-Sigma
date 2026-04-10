@@ -1,4 +1,6 @@
 const stores = [
+  /* ===== LUNES – F8X-899 – SUR COSTA ===== */
+
   {
     nombre: "PLAZA VEA MIRAFLORES",
     codigos: "6240312/6245307",
@@ -32,14 +34,6 @@ const stores = [
     camion: "F8X-899"
   },
   {
-    nombre: "PLAZA VEA MIRAFLORES",
-    codigos: "6240312/6245307",
-    lat: -12.112264,
-    lng: -77.029972,
-    dia: "Lunes",
-    camion: "F8X-899"
-  },
-  {
     nombre: "MAKRO CHORRILLOS (HUAYLAS)",
     codigos: "6247651/6247643",
     lat: -12.174321,
@@ -55,6 +49,9 @@ const stores = [
     dia: "Lunes",
     camion: "F8X-899"
   },
+
+  /* ===== MARTES – F8X-899 – SUR INTERIOR ===== */
+
   {
     nombre: "PLAZA VEA ALAMEDA SUR",
     codigos: "6245262/6240491",
@@ -72,7 +69,7 @@ const stores = [
     camion: "F8X-899"
   },
   {
-    nombre: "METRO SJM",
+    nombre: "METRO SAN JUAN DE MIRAFLORES",
     codigos: "6249305/6249297",
     lat: -12.160544,
     lng: -76.978288,
@@ -87,6 +84,4 @@ const stores = [
     dia: "Martes",
     camion: "F8X-899"
   }
-``
 ];
-``
