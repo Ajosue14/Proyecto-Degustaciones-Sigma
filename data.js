@@ -54,7 +54,7 @@ const stores = [
     lng: -77.012518,
     dia: "Lunes",
     camion: "F8X-899"
-  }
+  },
   {
     nombre: "PLAZA VEA ALAMEDA SUR",
     codigos: "6245262/6240491",
