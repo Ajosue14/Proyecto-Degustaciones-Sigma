@@ -55,5 +55,38 @@ const stores = [
     dia: "Lunes",
     camion: "F8X-899"
   }
+  {
+    nombre: "PLAZA VEA ALAMEDA SUR",
+    codigos: "6245262/6240491",
+    lat: -12.196812,
+    lng: -77.011472,
+    dia: "Martes",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "PLAZA VEA GUARDIA CIVIL",
+    codigos: "6245362/6241596",
+    lat: -12.17197,
+    lng: -76.992196,
+    dia: "Martes",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO SJM",
+    codigos: "6249305/6249297",
+    lat: -12.160544,
+    lng: -76.978288,
+    dia: "Martes",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "PLAZA VEA LA CURVA",
+    codigos: "6245480/6244271",
+    lat: -12.180293,
+    lng: -76.943061,
+    dia: "Martes",
+    camion: "F8X-899"
+  }
+``
 ];
 ``
