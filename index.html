@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rutas y Frecuencias de Reparto</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* MAPA FULLSCREEN */
+    #map {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* PANEL DE FILTROS */
+    .filters {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+      width: 200px;
+    }
+
+    .filters h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+    }
+
+    .filters select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 6px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <h4>Día</h4>
+    <select id="dayFilter">
+      <option value="Lunes">Lunes</option>
+      <option value="Martes">Martes</option>
+      <option value="Miércoles">Miércoles</option>
+      <option value="Jueves">Jueves</option>
+      <option value="Viernes">Viernes</option>
+      <option value="Sábado">Sábado</option>
+    </select>
+
+    <h4>Camión</h4>
+    <select id="truckFilter">
+      <option value="F8X-899">F8X-899</option>
+      <option value="F1G-866">F1G-866</option>
+    </select>
+  </div>
+
+  <!-- MAPA -->
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Inicializar mapa (Lima como centro)
+    const map = L.map('map').setView([-12.06, -77.04], 11);
+
+    // Capa base
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Ejemplo de punto (luego serán tus tiendas)
+    L.marker([-12.112264, -77.029972])
+      .addTo(map)
+      .bindPopup(`
+        <strong>PLAZA VEA MIRAFLORES</strong><br>
+        Códigos: 6240312/6245307<br>
+        Camión: F8X-899<br>
+        Día: Lunes
+      `);
+  </script>
+
+</body>
+</html>
+``
