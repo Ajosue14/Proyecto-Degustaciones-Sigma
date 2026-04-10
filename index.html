@@ -76,25 +76,46 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+<script src="data
   <script>
-    // Inicializar mapa (Lima como centro)
-    const map = L.map('map').setView([-12.06, -77.04], 11);
+    // inicializar mapa
+const map = L.map('map').setView([-12.06, -77.04], 11);
 
-    // Capa base
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
 
-    // Ejemplo de punto (luego serán tus tiendas)
-    L.marker([-12.112264, -77.029972])
-      .addTo(map)
-      .bindPopup(`
-        <strong>PLAZA VEA MIRAFLORES</strong><br>
-        Códigos: 6240312/6245307<br>
-        Camión: F8X-899<br>
-        Día: Lunes
-      `);
+let markers = [];
+
+function renderMarkers() {
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  const day = document.getElementById('dayFilter').value;
+  const truck = document.getElementById('truckFilter').value;
+
+  stores
+    .filter(s => s.dia === day && s.camion === truck)
+    .forEach(store => {
+      const marker = L.marker([store.lat, store.lng])
+        .addTo(map)
+        .bindPopup(`
+          <strong>${store.nombre}</strong><br>
+          Códigos: ${store.codigos}<br>
+          Camión: ${store.camion}<br>
+          Día: ${store.dia}
+        `);
+
+      markers.push(marker);
+    });
+}
+
+// eventos
+document.getElementById('dayFilter').addEventListener('change', renderMarkers);
+document.getElementById('truckFilter').addEventListener('change', renderMarkers);
+
+// pintar al cargar
+renderMarkers();
   </script>
 
 </body>
