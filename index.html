@@ -5,70 +5,84 @@
   <title>Plan de Rutas de Reparto</title>
 
   <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     html, body {
       height: 100%;
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
+      color: #1f2933;
     }
 
     #map {
       height: 100vh;
       width: 100vw;
-      z-index: 1;
     }
 
     /* PANEL */
     .filters {
       position: absolute;
-      top: 15px;
-      left: 15px;
+      top: 16px;
+      left: 16px;
       background: white;
-      padding: 14px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      padding: 16px;
+      border-radius: 12px;
+      width: 260px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       z-index: 1000;
-      width: 230px;
     }
 
     .filters h3 {
-      margin: 0 0 4px 0;
-      font-size: 16px;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
     }
 
     .filters p {
-      font-size: 12px;
-      margin: 0 0 10px 0;
-      color: #444;
+      margin: 4px 0 14px;
+      font-size: 13px;
+      color: #6b7280;
     }
 
     .filters label {
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 6px;
+      display: block;
     }
 
     .filters select {
       width: 100%;
-      margin: 4px 0 10px 0;
-      padding: 6px;
+      padding: 8px;
+      margin-top: 4px;
       font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
     }
 
     .counter {
-      font-size: 12px;
-      margin-top: 6px;
-      font-weight: bold;
+      margin-top: 12px;
+      padding: 10px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
     .legend {
-      font-size: 11px;
-      margin-top: 8px;
-      color: #333;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .legend span {
+      display: block;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -78,9 +92,9 @@
   <!-- PANEL -->
   <div class="filters">
     <h3>Plan de Reparto</h3>
-    <p>Selecciona el día y el camión para ver las rutas</p>
+    <p>Visualiza rutas por día y camión</p>
 
-    <label for="dayFilter">Día</label>
+    <label>Día</label>
     <select id="dayFilter">
       <option value="LUNES">Lunes</option>
       <option value="MARTES">Martes</option>
@@ -90,7 +104,7 @@
       <option value="SABADO">Sábado</option>
     </select>
 
-    <label for="truckFilter">Camión</label>
+    <label>Camión</label>
     <select id="truckFilter">
       <option value="TODOS">Todos los camiones</option>
       <option value="F8X-899">F8X-899</option>
@@ -100,12 +114,11 @@
     <div id="count" class="counter">Tiendas en ruta: 0</div>
 
     <div class="legend">
-      🔵 F8X-899 – Sur / Centro<br>
-      🟢 F1G-866 – Norte / Este
+      <span>🔵 F8X‑899 – Sur / Centro</span>
+      <span>🟢 F1G‑866 – Norte / Este</span>
     </div>
   </div>
 
-  <!-- MAPA -->
   <div id="map"></div>
 
   <!-- Leaflet JS -->
@@ -123,49 +136,46 @@
 
     let markers = [];
 
-    /* ===== ICONOS SVG PERSONALIZADOS ===== */
+    /* PINES DISCRETOS TIPO GOOGLE MAPS */
     function getIcon(camion) {
-  const color = camion === "F1G-866" ? "#2ecc71" : "#1976d2";
+      const color = camion === "F1G-866" ? "#2fa36b" : "#1f4fd8";
 
-  const svgIcon = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
-      <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z"
-        fill="${color}"/>
-      <circle cx="11" cy="11" r="4" fill="white"/>
-    </svg>
-  `;
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
+          <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z"
+                fill="${color}"/>
+          <circle cx="11" cy="11" r="4" fill="white"/>
+        </svg>
+      `;
 
-  return L.divIcon({
-    html: svgIcon,
-    className: "",
-    iconSize: [22, 30],
-    iconAnchor: [11, 30],
-    popupAnchor: [0, -22]
-  });
+      return L.divIcon({
+        html: svg,
+        className: "",
+        iconSize: [22, 30],
+        iconAnchor: [11, 30],
+        popupAnchor: [0, -22]
+      });
     }
 
     function renderMarkers() {
       markers.forEach(m => map.removeLayer(m));
       markers = [];
 
-      const day = document.getElementById("dayFilter").value;
-      const truck = document.getElementById("truckFilter").value;
+      const day = dayFilter.value;
+      const truck = truckFilter.value;
 
-      const filteredStores = stores.filter(s => {
-        if (truck === "TODOS") {
-          return s.dia === day;
-        }
-        return s.dia === day && s.camion === truck;
-      });
+      const filtered = stores.filter(s =>
+        s.dia === day && (truck === "TODOS" || s.camion === truck)
+      );
 
-      filteredStores.forEach(store => {
+      filtered.forEach(store => {
         const marker = L.marker([store.lat, store.lng], {
           icon: getIcon(store.camion)
         })
         .addTo(map)
         .bindPopup(`
           <strong>${store.nombre}</strong><br>
-          <hr style="margin:4px 0;">
+          <hr>
           <b>Códigos:</b> ${store.codigos}<br>
           <b>Camión:</b> ${store.camion}<br>
           <b>Día:</b> ${store.dia}
@@ -174,12 +184,11 @@
         markers.push(marker);
       });
 
-      document.getElementById("count").innerText =
-        `Tiendas en ruta: ${markers.length}`;
+      count.innerText = `Tiendas en ruta: ${markers.length}`;
     }
 
-    document.getElementById("dayFilter").addEventListener("change", renderMarkers);
-    document.getElementById("truckFilter").addEventListener("change", renderMarkers);
+    dayFilter.addEventListener("change", renderMarkers);
+    truckFilter.addEventListener("change", renderMarkers);
 
     renderMarkers();
   </script>
