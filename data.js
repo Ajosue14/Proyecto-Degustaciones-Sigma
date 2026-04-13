@@ -117,50 +117,49 @@ const stores = [
     camion: "F8X-899"
   },
   {
-    
-nombre: "METRO LINCE",
-  codigos: "6245187/6240367",
-  lat: -12.04878,
-  lng: -77.03188,
-  dia: "MIERCOLES",
-  camion: "F8X-899"
-},
-  
+    nombre: "METRO LINCE",
+    codigos: "6245187/6240367",
+    lat: -12.04878,
+    lng: -77.03188,
+    dia: "MIERCOLES",
+    camion: "F8X-899"
+  },
+
   /* ===== JUEVES – F8X-899 – CENTRO 2 ===== */
-{
-  nombre: "PLAZA VEA SAN ISIDRO",
-  codigos: "6245344/6243095",
-  lat: -12.097301,
-  lng: -77.026081,
-  dia: "JUEVES",
-  camion: "F8X-899"
-},
-{
-  nombre: "VIVANDA DOS DE MAYO",
-  codigos: "6245285/6240487",
-  lat: -12.092159,
-  lng: -77.045632,
-  dia: "JUEVES",
-  camion: "F8X-899"
-},
-{
-  nombre: "METRO SAN MIGUEL",
-  codigos: "6240291/6248758",
-  lat: -12.077039,
-  lng: -77.083667,
-  dia: "JUEVES",
-  camion: "F8X-899"
-},
-{
-  nombre: "PLAZA VEA PUEBLO LIBRE",
-  codigos: "6245214/6240297",
-  lat: -12.053479,
-  lng: -77.041911,
-  dia: "JUEVES",
-  camion: "F8X-899"
-}
-];
-/* ===== VIERNES – F8X-899 – REFUERZO ===== */
+  {
+    nombre: "PLAZA VEA SAN ISIDRO",
+    codigos: "6245344/6243095",
+    lat: -12.097301,
+    lng: -77.026081,
+    dia: "JUEVES",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "VIVANDA DOS DE MAYO",
+    codigos: "6245285/6240487",
+    lat: -12.092159,
+    lng: -77.045632,
+    dia: "JUEVES",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO SAN MIGUEL",
+    codigos: "6240291/6248758",
+    lat: -12.077039,
+    lng: -77.083667,
+    dia: "JUEVES",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "PLAZA VEA PUEBLO LIBRE",
+    codigos: "6245214/6240297",
+    lat: -12.053479,
+    lng: -77.041911,
+    dia: "JUEVES",
+    camion: "F8X-899"
+  },
+
+  /* ===== VIERNES – F8X-899 – REFUERZO ===== */
   {
     nombre: "WONG BENAVIDES",
     codigos: "6245455/6240345",
@@ -185,4 +184,4 @@ nombre: "METRO LINCE",
     dia: "VIERNES",
     camion: "F8X-899"
   }
-  ];
+];
