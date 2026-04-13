@@ -4,18 +4,29 @@
   <meta charset="UTF-8" />
   <title>Plan de Rutas de Reparto</title>
 
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-  <!-- Fuente moderna -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --bg-panel: white;
+      --bg-soft: #f3f4f6;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+    }
+
+    body.dark {
+      --bg-panel: #1f2933;
+      --bg-soft: #374151;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
       font-family: 'Inter', Arial, sans-serif;
-      color: #1f2933;
+      color: var(--text-main);
     }
 
     #map {
@@ -23,17 +34,21 @@
       width: 100vw;
     }
 
-    /* PANEL */
     .filters {
       position: absolute;
       top: 16px;
       left: 16px;
-      background: white;
+      background: var(--bg-panel);
       padding: 16px;
       border-radius: 12px;
-      width: 260px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      width: 270px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .filters.hidden {
+      transform: translateX(-110%);
     }
 
     .filters h3 {
@@ -45,30 +60,30 @@
     .filters p {
       margin: 4px 0 14px;
       font-size: 13px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .filters label {
       font-size: 12px;
       font-weight: 600;
-      margin-top: 6px;
       display: block;
+      margin-top: 8px;
     }
 
     .filters select {
       width: 100%;
       padding: 8px;
       margin-top: 4px;
-      font-size: 13px;
       border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
+      border: none;
+      background: var(--bg-soft);
+      color: var(--text-main);
     }
 
     .counter {
       margin-top: 12px;
       padding: 10px;
-      background: #f3f4f6;
+      background: var(--bg-soft);
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
@@ -77,121 +92,138 @@
     .legend {
       margin-top: 10px;
       font-size: 12px;
-      color: #374151;
     }
 
-    .legend span {
-      display: block;
-      margin-top: 4px;
+    .top-buttons {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 1100;
+    }
+
+    .top-buttons button {
+      background: var(--bg-panel);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-left: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PANEL -->
-  <div class="filters">
-    <h3>Plan de Reparto</h3>
-    <p>Visualiza rutas por día y camión</p>
+<div class="top-buttons">
+  <button onclick="togglePanel()">☰</button>
+  <button onclick="toggleDark()">🌙</button>
+</div>
 
-    <label>Día</label>
-    <select id="dayFilter">
-      <option value="LUNES">Lunes</option>
-      <option value="MARTES">Martes</option>
-      <option value="MIERCOLES">Miércoles</option>
-      <option value="JUEVES">Jueves</option>
-      <option value="VIERNES">Viernes</option>
-      <option value="SABADO">Sábado</option>
-    </select>
+<div class="filters" id="panel">
+  <h3>Plan de Reparto</h3>
+  <p>Visualiza rutas por día y camión</p>
 
-    <label>Camión</label>
-    <select id="truckFilter">
-      <option value="TODOS">Todos los camiones</option>
-      <option value="F8X-899">F8X-899</option>
-      <option value="F1G-866">F1G-866</option>
-    </select>
+  <label>Día</label>
+  <select id="dayFilter">
+    <option value="TODOS">Todos los días</option>
+    <option value="LUNES">Lunes</option>
+    <option value="MARTES">Martes</option>
+    <option value="MIERCOLES">Miércoles</option>
+    <option value="JUEVES">Jueves</option>
+    <option value="VIERNES">Viernes</option>
+  </select>
 
-    <div id="count" class="counter">Tiendas en ruta: 0</div>
+  <label>Camión</label>
+  <select id="truckFilter">
+    <option value="TODOS">Todos los camiones</option>
+    <option value="F8X-899">F8X-899</option>
+    <option value="F1G-866">F1G-866</option>
+  </select>
 
-    <div class="legend">
-      <span>🔵 F8X‑899 – Sur / Centro</span>
-      <span>🟢 F1G‑866 – Norte / Este</span>
-    </div>
+  <div id="count" class="counter">Tiendas en ruta: 0</div>
+
+  <div class="legend">
+    🔵 F8X‑899 – Sur / Centro<br>
+    🟢 F1G‑866 – Norte / Este
   </div>
+</div>
 
-  <div id="map"></div>
+<div id="map"></div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="data.js"></script>
 
-  <!-- DATA -->
-  <script src="data.js"></script>
+<script>
+  const map = L.map("map", { zoomControl: false }).setView([-12.06, -77.04], 11);
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  <script>
-    const map = L.map("map").setView([-12.06, -77.04], 11);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap"
-    }).addTo(map);
+  let markers = [];
+  let routes = [];
 
-    let markers = [];
+  function getIcon(camion) {
+    const color = camion === "F1G-866" ? "#2fa36b" : "#1f4fd8";
+    return L.divIcon({
+      html: `<svg width="22" height="30" viewBox="0 0 22 30">
+        <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z" fill="${color}"/>
+        <circle cx="11" cy="11" r="4" fill="white"/>
+      </svg>`,
+      iconSize: [22,30],
+      iconAnchor: [11,30]
+    });
+  }
 
-    /* PINES DISCRETOS TIPO GOOGLE MAPS */
-    function getIcon(camion) {
-      const color = camion === "F1G-866" ? "#2fa36b" : "#1f4fd8";
+  function render() {
+    markers.forEach(m => map.removeLayer(m));
+    routes.forEach(r => map.removeLayer(r));
+    markers = [];
+    routes = [];
 
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
-          <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z"
-                fill="${color}"/>
-          <circle cx="11" cy="11" r="4" fill="white"/>
-        </svg>
-      `;
+    const day = dayFilter.value;
+    const truck = truckFilter.value;
 
-      return L.divIcon({
-        html: svg,
-        className: "",
-        iconSize: [22, 30],
-        iconAnchor: [11, 30],
-        popupAnchor: [0, -22]
-      });
+    const filtered = stores.filter(s =>
+      (day === "TODOS" || s.dia === day) &&
+      (truck === "TODOS" || s.camion === truck)
+    );
+
+    // Dibujar rutas
+    const grouped = {};
+    filtered.forEach(s => {
+      const key = `${s.dia}-${s.camion}`;
+      grouped[key] = grouped[key] || [];
+      grouped[key].push([s.lat, s.lng]);
+    });
+
+    for (const key in grouped) {
+      const color = key.includes("F1G-866") ? "#2fa36b" : "#1f4fd8";
+      routes.push(L.polyline(grouped[key], { color, weight: 4 }).addTo(map));
     }
 
-    function renderMarkers() {
-      markers.forEach(m => map.removeLayer(m));
-      markers = [];
-
-      const day = dayFilter.value;
-      const truck = truckFilter.value;
-
-      const filtered = stores.filter(s =>
-        s.dia === day && (truck === "TODOS" || s.camion === truck)
-      );
-
-      filtered.forEach(store => {
-        const marker = L.marker([store.lat, store.lng], {
-          icon: getIcon(store.camion)
-        })
+    filtered.forEach(s => {
+      markers.push(L.marker([s.lat, s.lng], { icon: getIcon(s.camion) })
         .addTo(map)
-        .bindPopup(`
-          <strong>${store.nombre}</strong><br>
-          <hr>
-          <b>Códigos:</b> ${store.codigos}<br>
-          <b>Camión:</b> ${store.camion}<br>
-          <b>Día:</b> ${store.dia}
-        `);
+        .bindPopup(`<strong>${s.nombre}</strong><br>${s.codigos}`));
+    });
 
-        markers.push(marker);
-      });
+    count.innerText = `Tiendas en ruta: ${filtered.length}`;
+  }
 
-      count.innerText = `Tiendas en ruta: ${markers.length}`;
-    }
+  dayFilter.onchange = truckFilter.onchange = render;
 
-    dayFilter.addEventListener("change", renderMarkers);
-    truckFilter.addEventListener("change", renderMarkers);
+  function togglePanel() {
+    panel.classList.toggle("hidden");
+  }
 
-    renderMarkers();
-  </script>
+  function toggleDark() {
+    document.body.classList.toggle("dark");
+  }
+
+  render();
+</script>
 
 </body>
 </html>
+``
