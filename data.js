@@ -266,5 +266,38 @@ const stores = [
     lng: -76.8851442,
     dia: "MIERCOLES",
     camion: "F1G-866"
+  },
+  /* ===== JUEVES – F1G-866 – ESTE 2 ===== */
+  {
+    nombre: "PLAZA VEA LA MOLINA",
+    codigos: "6245310/6240305",
+    lat: -12.0907,
+    lng: -76.9507,
+    dia: "JUEVES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "WONG CAMACHO",
+    codigos: "6245462/6240336",
+    lat: -12.080493,
+    lng: -76.966998,
+    dia: "JUEVES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA SAN JUAN DE LURIGANCHO",
+    codigos: "6245230/6240277",
+    lat: -11.933719,
+    lng: -76.689092,
+    dia: "JUEVES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "METRO SAN JUAN DE LURIGANCHO",
+    codigos: "6245183/6240366",
+    lat: -12.007111,
+    lng: -77.004826,
+    dia: "JUEVES",
+    camion: "F1G-866"
   }
 ];
