@@ -216,5 +216,30 @@ const stores = [
     lng: -77.060852,
     dia: "LUNES",
     camion: "F1G-866"
+  },
+  /* ===== MARTES – F1G-866 – NORTE 2 ===== */
+  {
+    nombre: "PLAZA VEA PUENTE PIEDRA",
+    codigos: "6245217/6240280",
+    lat: -11.864227,
+    lng: -77.0733,
+    dia: "MARTES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA VENTANILLA",
+    codigos: "6245351/6243137",
+    lat: -11.872437,
+    lng: -77.126916,
+    dia: "MARTES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "TOTTUS PUENTE PIEDRA",
+    codigos: "6245365/6240426",
+    lat: -11.99779,
+    lng: -76.921479,
+    dia: "MARTES",
+    camion: "F1G-866"
   }
 ];
