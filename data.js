@@ -299,5 +299,30 @@ const stores = [
     lng: -77.004826,
     dia: "JUEVES",
     camion: "F1G-866"
+  },
+  /* ===== VIERNES – F1G-866 – RUTAS LARGAS / REFUERZO ===== */
+  {
+    nombre: "PLAZA VEA CHOSICA",
+    codigos: "6245274/6240905",
+    lat: -11.940355,
+    lng: -76.699793,
+    dia: "VIERNES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA STA. CLARA",
+    codigos: "6245229/6240278",
+    lat: -12.0135167,
+    lng: -76.8851442,
+    dia: "VIERNES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "TOTTUS ATOCONGO",
+    codigos: "6245257/6240477",
+    lat: -11.99779,
+    lng: -76.921479,
+    dia: "VIERNES",
+    camion: "F1G-866"
   }
 ];
