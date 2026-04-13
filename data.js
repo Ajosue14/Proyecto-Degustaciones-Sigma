@@ -160,3 +160,29 @@ nombre: "METRO LINCE",
   camion: "F8X-899"
 }
 ];
+/* ===== VIERNES – F8X-899 – REFUERZO ===== */
+  {
+    nombre: "WONG BENAVIDES",
+    codigos: "6245455/6240345",
+    lat: -12.126047,
+    lng: -77.017705,
+    dia: "VIERNES",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "PLAZA VEA LA MOLINA",
+    codigos: "6245310/6240305",
+    lat: -12.0907,
+    lng: -76.9507,
+    dia: "VIERNES",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO MARINA",
+    codigos: "6245182/6240374",
+    lat: -12.077654,
+    lng: -77.090583,
+    dia: "VIERNES",
+    camion: "F8X-899"
+  }
+``
