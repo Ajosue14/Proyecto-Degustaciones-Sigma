@@ -241,5 +241,30 @@ const stores = [
     lng: -76.921479,
     dia: "MARTES",
     camion: "F1G-866"
+  },
+  /* ===== MIERCOLES – F1G-866 – ESTE 1 ===== */
+  {
+    nombre: "PLAZA VEA PURUCHUCO",
+    codigos: "6245442/6245111",
+    lat: -12.0396155,
+    lng: -76.9325282,
+    dia: "MIERCOLES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "WONG ATE",
+    codigos: "6245465/6240314",
+    lat: -12.059361,
+    lng: -76.962773,
+    dia: "MIERCOLES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA STA. CLARA",
+    codigos: "6245229/6240278",
+    lat: -12.0135167,
+    lng: -76.8851442,
+    dia: "MIERCOLES",
+    camion: "F1G-866"
   }
 ];
