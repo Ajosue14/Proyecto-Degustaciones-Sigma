@@ -125,23 +125,23 @@
 
     /* ===== ICONOS SVG PERSONALIZADOS ===== */
     function getIcon(camion) {
-      const color = camion === "F1G-866" ? "#2ecc71" : "#3498db";
+  const color = camion === "F1G-866" ? "#2ecc71" : "#1976d2";
 
-      const svgIcon = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="44" viewBox="0 0 34 44">
-          <path d="M17 0C7.6 0 0 7.6 0 17c0 11.5 17 27 17 27s17-15.5 17-27C34 7.6 26.4 0 17 0z"
-                fill="${color}"/>
-          <circle cx="17" cy="17" r="6" fill="white"/>
-        </svg>
-      `;
+  const svgIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
+      <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z"
+        fill="${color}"/>
+      <circle cx="11" cy="11" r="4" fill="white"/>
+    </svg>
+  `;
 
-      return L.divIcon({
-        html: svgIcon,
-        className: "",
-        iconSize: [34, 44],
-        iconAnchor: [17, 44],
-        popupAnchor: [0, -36]
-      });
+  return L.divIcon({
+    html: svgIcon,
+    className: "",
+    iconSize: [22, 30],
+    iconAnchor: [11, 30],
+    popupAnchor: [0, -22]
+  });
     }
 
     function renderMarkers() {
