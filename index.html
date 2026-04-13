@@ -111,7 +111,7 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Data -->
+  <!-- DATA -->
   <script src="data.js"></script>
 
   <script>
@@ -123,18 +123,24 @@
 
     let markers = [];
 
-    // Iconos por camión
+    /* ===== ICONOS SVG PERSONALIZADOS ===== */
     function getIcon(camion) {
-      const iconUrl =
-        camion === "F1G-866"
-          ? "https://maps.gstatic.com/mapfiles/ms2/micons/green.png"
-          : "https://maps.gstatic.com/mapfiles/ms2/micons/blue.png";
+      const color = camion === "F1G-866" ? "#2ecc71" : "#3498db";
 
-      return L.icon({
-        iconUrl: iconUrl,
-        iconSize: [24, 24],
-        iconAnchor: [12, 24],
-        popupAnchor: [0, -24]
+      const svgIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="44" viewBox="0 0 34 44">
+          <path d="M17 0C7.6 0 0 7.6 0 17c0 11.5 17 27 17 27s17-15.5 17-27C34 7.6 26.4 0 17 0z"
+                fill="${color}"/>
+          <circle cx="17" cy="17" r="6" fill="white"/>
+        </svg>
+      `;
+
+      return L.divIcon({
+        html: svgIcon,
+        className: "",
+        iconSize: [34, 44],
+        iconAnchor: [17, 44],
+        popupAnchor: [0, -36]
       });
     }
 
@@ -156,14 +162,14 @@
         const marker = L.marker([store.lat, store.lng], {
           icon: getIcon(store.camion)
         })
-          .addTo(map)
-          .bindPopup(`
-            <strong>${store.nombre}</strong><br>
-            <hr style="margin:4px 0;">
-            <b>Códigos:</b> ${store.codigos}<br>
-            <b>Camión:</b> ${store.camion}<br>
-            <b>Día:</b> ${store.dia}
-          `);
+        .addTo(map)
+        .bindPopup(`
+          <strong>${store.nombre}</strong><br>
+          <hr style="margin:4px 0;">
+          <b>Códigos:</b> ${store.codigos}<br>
+          <b>Camión:</b> ${store.camion}<br>
+          <b>Día:</b> ${store.dia}
+        `);
 
         markers.push(marker);
       });
