@@ -2,6 +2,168 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <title>Plan de Rutas de Reparto</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* MAPA */
+    #map {
+      height: 100vh;
+      width: 100vw;
+      z-index: 1;
+    }
+
+    /* PANEL DE FILTROS */
+    .filters {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: white;
+      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      z-index: 1000;
+      width: 220px;
+    }
+
+    .filters h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+    }
+
+    .filters p {
+      font-size: 12px;
+      margin: 0 0 10px 0;
+      color: #444;
+    }
+
+    .filters label {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .filters select {
+      width: 100%;
+      margin: 4px 0 10px 0;
+      padding: 6px;
+      font-size: 13px;
+    }
+
+    .counter {
+      font-size: 12px;
+      margin-top: 6px;
+      font-weight: bold;
+    }
+
+    .legend {
+      font-size: 11px;
+      margin-top: 8px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PANEL -->
+  <div class="filters">
+    <h3>Plan de Reparto</h3>
+    <p>Selecciona el día y el camión para ver la ruta</p>
+
+    <label for="dayFilter">Día</label>
+    <select id="dayFilter">
+      <option value="LUNES">Lunes</option>
+      <option value="MARTES">Martes</option>
+      <option value="MIERCOLES">Miércoles</option>
+      <option value="JUEVES">Jueves</option>
+      <option value="VIERNES">Viernes</option>
+      <option value="SABADO">Sábado</option>
+    </select>
+
+    <label for="truckFilter">Camión</label>
+    <select id="truckFilter">
+      <option value="F8X-899">F8X-899</option>
+      <option value="F1G-866">F1G-866</option>
+    </select>
+
+    <div id="count" class="counter">Tiendas en ruta: 0</div>
+
+    <div class="legend">
+      🚚 F8X-899 – Sur / Centro<br>
+      🚚 F1G-866 – Norte / Este
+    </div>
+  </div>
+
+  <!-- MAPA -->
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- DATA -->
+  <script src="data.js"></script>
+
+  <script>
+    // Inicializar mapa
+    const map = L.map("map").setView([-12.06, -77.04], 11);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap"
+    }).addTo(map);
+
+    let markers = [];
+
+    function renderMarkers() {
+      // Borrar marcadores previos
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      const day = document.getElementById("dayFilter").value;
+      const truck = document.getElementById("truckFilter").value;
+
+      stores
+        .filter(s => s.dia === day && s.camion === truck)
+        .forEach(store => {
+          const marker = L.marker([store.lat, store.lng])
+            .addTo(map)
+            .bindPopup(`
+              <strong>${store.nombre}</strong><br>
+              <hr style="margin:4px 0;">
+              <b>Códigos:</b> ${store.codigos}<br>
+              <b>Camión:</b> ${store.camion}<br>
+              <b>Día:</b> ${store.dia}
+            `);
+
+          markers.push(marker);
+        });
+
+      // Contador
+      document.getElementById("count").innerText =
+        `Tiendas en ruta: ${markers.length}`;
+    }
+
+    document.getElementById("dayFilter").addEventListener("change", renderMarkers);
+    document.getElementById("truckFilter").addEventListener("change", renderMarkers);
+
+    renderMarkers();
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
   <title>Rutas y Frecuencias de Reparto</title>
 
   <!-- Leaflet CSS -->
