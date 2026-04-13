@@ -159,4 +159,4 @@ nombre: "METRO LINCE",
   dia: "JUEVES",
   camion: "F8X-899"
 }
-``
+];
