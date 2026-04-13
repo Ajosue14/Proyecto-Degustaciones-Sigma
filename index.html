@@ -17,14 +17,13 @@
       font-family: Arial, sans-serif;
     }
 
-    /* MAPA */
     #map {
       height: 100vh;
       width: 100vw;
       z-index: 1;
     }
 
-    /* PANEL DE FILTROS */
+    /* PANEL */
     .filters {
       position: absolute;
       top: 15px;
@@ -34,7 +33,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
       z-index: 1000;
-      width: 220px;
+      width: 230px;
     }
 
     .filters h3 {
@@ -79,7 +78,7 @@
   <!-- PANEL -->
   <div class="filters">
     <h3>Plan de Reparto</h3>
-    <p>Selecciona el día y el camión para ver la ruta</p>
+    <p>Selecciona el día y el camión para ver las rutas</p>
 
     <label for="dayFilter">Día</label>
     <select id="dayFilter">
@@ -93,6 +92,7 @@
 
     <label for="truckFilter">Camión</label>
     <select id="truckFilter">
+      <option value="TODOS">Todos los camiones</option>
       <option value="F8X-899">F8X-899</option>
       <option value="F1G-866">F1G-866</option>
     </select>
@@ -100,8 +100,8 @@
     <div id="count" class="counter">Tiendas en ruta: 0</div>
 
     <div class="legend">
-      🚚 F8X-899 – Sur / Centro<br>
-      🚚 F1G-866 – Norte / Este
+      🔵 F8X-899 – Sur / Centro<br>
+      🟢 F1G-866 – Norte / Este
     </div>
   </div>
 
@@ -111,11 +111,10 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- DATA -->
+  <!-- Data -->
   <script src="data.js"></script>
 
   <script>
-    // Inicializar mapa
     const map = L.map("map").setView([-12.06, -77.04], 11);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -124,31 +123,51 @@
 
     let markers = [];
 
+    // Iconos por camión
+    function getIcon(camion) {
+      const iconUrl =
+        camion === "F1G-866"
+          ? "https://maps.gstatic.com/mapfiles/ms2/micons/green.png"
+          : "https://maps.gstatic.com/mapfiles/ms2/micons/blue.png";
+
+      return L.icon({
+        iconUrl: iconUrl,
+        iconSize: [24, 24],
+        iconAnchor: [12, 24],
+        popupAnchor: [0, -24]
+      });
+    }
+
     function renderMarkers() {
-      // Borrar marcadores previos
       markers.forEach(m => map.removeLayer(m));
       markers = [];
 
       const day = document.getElementById("dayFilter").value;
       const truck = document.getElementById("truckFilter").value;
 
-      stores
-        .filter(s => s.dia === day && s.camion === truck)
-        .forEach(store => {
-          const marker = L.marker([store.lat, store.lng])
-            .addTo(map)
-            .bindPopup(`
-              <strong>${store.nombre}</strong><br>
-              <hr style="margin:4px 0;">
-              <b>Códigos:</b> ${store.codigos}<br>
-              <b>Camión:</b> ${store.camion}<br>
-              <b>Día:</b> ${store.dia}
-            `);
+      const filteredStores = stores.filter(s => {
+        if (truck === "TODOS") {
+          return s.dia === day;
+        }
+        return s.dia === day && s.camion === truck;
+      });
 
-          markers.push(marker);
-        });
+      filteredStores.forEach(store => {
+        const marker = L.marker([store.lat, store.lng], {
+          icon: getIcon(store.camion)
+        })
+          .addTo(map)
+          .bindPopup(`
+            <strong>${store.nombre}</strong><br>
+            <hr style="margin:4px 0;">
+            <b>Códigos:</b> ${store.codigos}<br>
+            <b>Camión:</b> ${store.camion}<br>
+            <b>Día:</b> ${store.dia}
+          `);
 
-      // Contador
+        markers.push(marker);
+      });
+
       document.getElementById("count").innerText =
         `Tiendas en ruta: ${markers.length}`;
     }
@@ -160,126 +179,4 @@
   </script>
 
 </body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Rutas y Frecuencias de Reparto</title>
-
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
-
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-
-    /* MAPA FULLSCREEN */
-    #map {
-      height: 100vh;
-      width: 100vw;
-    }
-
-    /* PANEL DE FILTROS */
-    .filters {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: white;
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 1000;
-      font-family: Arial, sans-serif;
-      width: 200px;
-    }
-
-    .filters h4 {
-      margin: 0 0 8px 0;
-      font-size: 14px;
-    }
-
-    .filters select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 6px;
-      font-size: 13px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- FILTROS -->
-  <div class="filters">
-    <h4>Día</h4>
-  <select id="dayFilter">
-  <option value="LUNES">Lunes</option>
-  <option value="MARTES">Martes</option>
-  <option value="MIERCOLES">Miércoles</option>
-  <option value="JUEVES">Jueves</option>
-  <option value="VIERNES">Viernes</option>
-  <option value="SABADO">Sábado</option>
-</select>
-
-    <h4>Camión</h4>
-    <select id="truckFilter">
-      <option value="F8X-899">F8X-899</option>
-      <option value="F1G-866">F1G-866</option>
-    </select>
-  </div>
-
-  <!-- MAPA -->
-  <div id="map"></div>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="data.js"></script>
-  <script>
-    // inicializar mapa
-const map = L.map('map').setView([-12.06, -77.04], 11);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-let markers = [];
-
-function renderMarkers() {
-  markers.forEach(m => map.removeLayer(m));
-  markers = [];
-
-  const day = document.getElementById('dayFilter').value;
-  const truck = document.getElementById('truckFilter').value;
-
-  stores
-    .filter(s => s.dia === day && s.camion === truck)
-    .forEach(store => {
-      const marker = L.marker([store.lat, store.lng])
-        .addTo(map)
-        .bindPopup(`
-          <strong>${store.nombre}</strong><br>
-          Códigos: ${store.codigos}<br>
-          Camión: ${store.camion}<br>
-          Día: ${store.dia}
-        `);
-
-      markers.push(marker);
-    });
-}
-
-// eventos
-document.getElementById('dayFilter').addEventListener('change', renderMarkers);
-document.getElementById('truckFilter').addEventListener('change', renderMarkers);
-
-// pintar al cargar
-renderMarkers();
-  </script>
-
-</body>
 </html>
-``
