@@ -83,5 +83,47 @@ const stores = [
     lng: -76.943061,
     dia: "Martes",
     camion: "F8X-899"
+  },
+  /* ===== MIÉRCOLES – F8X-899 – ZONA CENTRO ===== */
+
+  {
+    nombre: "PLAZA VEA ALCAZAR",
+    codigos: "6245248/6242247",
+    lat: -12.029268,
+    lng: -77.031081,
+    dia: "Miércoles",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "PLAZA VEA ALFONSO UGARTE",
+    codigos: "6245214/6240297",
+    lat: -12.053479,
+    lng: -77.041911,
+    dia: "Miércoles",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO BREÑA",
+    codigos: "6240375/6245179",
+    lat: -12.054307,
+    lng: -77.042429,
+    dia: "Miércoles",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO JESÚS MARÍA (GARZÓN)",
+    codigos: "6245194/6240372",
+    lat: -12.073768,
+    lng: -77.050969,
+    dia: "Miércoles",
+    camion: "F8X-899"
+  },
+  {
+    nombre: "METRO LINCE",
+    codigos: "6245187/6240367",
+    lat: -12.04878,
+    lng: -77.03188,
+    dia: "Miércoles",
+    camion: "F8X-899"
   }
 ];
