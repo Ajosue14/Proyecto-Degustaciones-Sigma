@@ -9,7 +9,7 @@
 
   <style>
     :root {
-      --bg-panel: white;
+      --bg-panel: #ffffff;
       --bg-soft: #f3f4f6;
       --text-main: #1f2933;
       --text-muted: #6b7280;
@@ -110,6 +110,12 @@
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+
+    /* 🔴 ELIMINA EL CUADRO DE LOS PINES */
+    .custom-pin {
+      background: transparent !important;
+      border: none !important;
+    }
   </style>
 </head>
 
@@ -157,21 +163,26 @@
 <script>
   const map = L.map("map", { zoomControl: false }).setView([-12.06, -77.04], 11);
   L.control.zoom({ position: 'bottomright' }).addTo(map);
-
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
   let markers = [];
   let routes = [];
 
+  /* ✅ PIN FLOTANTE SIN CUADRO */
   function getIcon(camion) {
     const color = camion === "F1G-866" ? "#2fa36b" : "#1f4fd8";
     return L.divIcon({
-      html: `<svg width="22" height="30" viewBox="0 0 22 30">
-        <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z" fill="${color}"/>
-        <circle cx="11" cy="11" r="4" fill="white"/>
-      </svg>`,
+      html: `
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
+          <path d="M11 0C4.9 0 0 4.9 0 11c0 8.5 11 19 11 19s11-10.5 11-19C22 4.9 17.1 0 11 0z"
+                fill="${color}"/>
+          <circle cx="11" cy="11" r="4" fill="white"/>
+        </svg>
+      `,
+      className: "custom-pin",
       iconSize: [22,30],
-      iconAnchor: [11,30]
+      iconAnchor: [11,30],
+      popupAnchor: [0,-22]
     });
   }
 
@@ -189,7 +200,6 @@
       (truck === "TODOS" || s.camion === truck)
     );
 
-    // Dibujar rutas
     const grouped = {};
     filtered.forEach(s => {
       const key = `${s.dia}-${s.camion}`;
@@ -197,15 +207,26 @@
       grouped[key].push([s.lat, s.lng]);
     });
 
+    /* ✅ RUTAS SUAVES (PLAN, NO GPS) */
     for (const key in grouped) {
       const color = key.includes("F1G-866") ? "#2fa36b" : "#1f4fd8";
-      routes.push(L.polyline(grouped[key], { color, weight: 4 }).addTo(map));
+      routes.push(
+        L.polyline(grouped[key], {
+          color,
+          weight: 3,
+          opacity: 0.7,
+          lineJoin: "round",
+          lineCap: "round"
+        }).addTo(map)
+      );
     }
 
     filtered.forEach(s => {
-      markers.push(L.marker([s.lat, s.lng], { icon: getIcon(s.camion) })
-        .addTo(map)
-        .bindPopup(`<strong>${s.nombre}</strong><br>${s.codigos}`));
+      markers.push(
+        L.marker([s.lat, s.lng], { icon: getIcon(s.camion) })
+          .addTo(map)
+          .bindPopup(`<strong>${s.nombre}</strong><br>${s.codigos}`)
+      );
     });
 
     count.innerText = `Tiendas en ruta: ${filtered.length}`;
@@ -226,4 +247,3 @@
 
 </body>
 </html>
-``
