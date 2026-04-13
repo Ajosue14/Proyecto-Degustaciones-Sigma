@@ -183,5 +183,38 @@ const stores = [
     lng: -77.090583,
     dia: "VIERNES",
     camion: "F8X-899"
+  },
+  /* ===== LUNES – F1G-866 – NORTE 1 ===== */
+  {
+    nombre: "METRO INDEPENDENCIA",
+    codigos: "6245208/6240485",
+    lat: -11.987407,
+    lng: -77.064203,
+    dia: "LUNES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA IZAGUIRRE",
+    codigos: "6245180/6240282",
+    lat: -12.049088,
+    lng: -77.035561,
+    dia: "LUNES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "PLAZA VEA LOS OLIVOS",
+    codigos: "6245313/6240301",
+    lat: -11.993841,
+    lng: -77.072621,
+    dia: "LUNES",
+    camion: "F1G-866"
+  },
+  {
+    nombre: "METRO PLAZA NORTE",
+    codigos: "6245169/6240331",
+    lat: -12.006155,
+    lng: -77.060852,
+    dia: "LUNES",
+    camion: "F1G-866"
   }
 ];
