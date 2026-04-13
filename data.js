@@ -84,7 +84,7 @@ const stores = [
     dia: "Martes",
     camion: "F8X-899"
   },
-  /* ===== MIÉRCOLES – F8X-899 – ZONA CENTRO ===== */
+  /* ===== MIERCOLES – F8X-899 – ZONA CENTRO ===== */
 
   {
     nombre: "PLAZA VEA ALCAZAR",
